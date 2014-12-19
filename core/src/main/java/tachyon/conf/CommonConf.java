@@ -35,7 +35,7 @@ public class CommonConf extends Utils {
   private static CommonConf sCommonConf = null;
 
   public static final ImmutableList<String> DEFAULT_HADOOP_UFS_PREFIX = ImmutableList.of("hdfs://",
-      "s3://", "s3n://", "glusterfs:///");
+      "s3://", "s3n://", "glusterfs:///", "nfs://");
 
   private static final String DEFAULT_HOME = "/mnt/tachyon_default_home";
   /**
@@ -63,6 +63,18 @@ public class CommonConf extends Utils {
   public final String UNDERFS_GLUSTERFS_VOLUMES;
   public final String UNDERFS_GLUSTERFS_MOUNTS;
   public final String UNDERFS_GLUSTERFS_MR_DIR;
+  
+  /*
+   * NFS Configuration
+   */
+  public final String UNDERFS_NFS_MOUNT_DIR;
+  public final String UNDERFS_NFS_IMPL;
+  public final String ABSFS_NFS_IMPL;
+  public final String NFS_AUTH_FLAVOR;
+  public final String NFS_USERNAME;
+  public final String NFS_GROUPNAME;
+  public final boolean NFS_PREFETCH;
+  
   public final String WEB_RESOURCES;
   public final boolean USE_ZOOKEEPER;
   public final String ZOOKEEPER_ADDRESS;
@@ -129,6 +141,16 @@ public class CommonConf extends Utils {
 
     // use 29 as default since current exponential logic overflows int
     MASTER_RETRY_COUNT = getIntProperty("tachyon.master.retry", 29);
+    
+    //nfs configuration
+    UNDERFS_NFS_MOUNT_DIR = getProperty("tachyon.underfs.mount.dir",null);
+    UNDERFS_NFS_IMPL = getProperty("tachyon.underfs.nfs.impl",null);
+    ABSFS_NFS_IMPL = getProperty("tachyon.absfs.nfs.impl",null);
+    NFS_AUTH_FLAVOR = getProperty("tachyon.nfs.auth.flavor",null);
+    NFS_USERNAME = getProperty("tachyon.nfs.username",null);
+    NFS_GROUPNAME = getProperty("tachyon.groupname",null);
+    NFS_PREFETCH = getBooleanProperty("tachyon.nfs.prefetch",true);
+    
   }
 
   public static void assertValidPort(final int port) {

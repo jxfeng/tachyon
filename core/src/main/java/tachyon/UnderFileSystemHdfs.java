@@ -69,12 +69,35 @@ public class UnderFileSystemHdfs extends UnderFileSystem {
       tConf = new Configuration();
     }
     String glusterfsPrefix = "glusterfs:///";
+    String nfsPrefix = "nfs://";
     if (fsDefaultName.startsWith(glusterfsPrefix)) {
       tConf.set("fs.glusterfs.impl", CommonConf.get().UNDERFS_GLUSTERFS_IMPL);
       tConf.set("mapred.system.dir", CommonConf.get().UNDERFS_GLUSTERFS_MR_DIR);
       tConf.set("fs.glusterfs.volumes", CommonConf.get().UNDERFS_GLUSTERFS_VOLUMES);
       tConf.set("fs.glusterfs.volume.fuse." + CommonConf.get().UNDERFS_GLUSTERFS_VOLUMES,
           CommonConf.get().UNDERFS_GLUSTERFS_MOUNTS);
+    } else if (fsDefaultName.startsWith(nfsPrefix)) {
+      if (tConf.get("fs.nfs.mountdir") == null) {
+        tConf.set("fs.nfs.mountdir", CommonConf.get().UNDERFS_NFS_MOUNT_DIR);
+      } 
+      if (tConf.get("fs.nfs.impl") == null) {
+        tConf.set("fs.nfs.impl", CommonConf.get().UNDERFS_NFS_IMPL);
+      }
+      if (tConf.get("fs.nfs.auth.flavor") == null) {
+        tConf.set("fs.nfs.auth.flavor", CommonConf.get().NFS_AUTH_FLAVOR);
+      }
+      if (tConf.get("fs.AbstractFileSystem.nfs.impl") == null) {
+        tConf.set("fs.AbstractFileSystem.nfs.impl", CommonConf.get().ABSFS_NFS_IMPL);
+      }
+      if (tConf.get("fs.nfs.username") == null) {
+        tConf.set("fs.nfs.username", CommonConf.get().NFS_USERNAME);
+      }
+      if (tConf.get("fs.nfs.groupname") == null) {
+        tConf.set("fs.nfs.username", CommonConf.get().NFS_GROUPNAME);
+      }     
+      if (tConf.get("fs.nfs.prefetch") == null) {
+        tConf.setBoolean("fs.nfs.prefetch", CommonConf.get().NFS_PREFETCH);
+      }
     } else {
       tConf.set("fs.hdfs.impl", CommonConf.get().UNDERFS_HDFS_IMPL);
 
